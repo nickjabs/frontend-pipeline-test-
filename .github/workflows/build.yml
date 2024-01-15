@@ -35,21 +35,3 @@ jobs:
 
       - name: Push Docker Image to ECR
         run: docker push public.ecr.aws/o3i0k7i9/my-ecr-repo:latest # Replace with your actual repository name
-
-      - name: Amazon ECR Login
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
-        with:
-          mask-password: true # Protect your password
-          registry-type: public
-          skip-logout: false
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: eu-central-1 # Region is now explicitly set
-
-      - name: Tag Docker Image
-        run: docker tag frontend-image ${{ steps.login-ecr.outputs.registry }}:v0.1
-
-      - name: Push Docker Image to ECR
-        run: docker push ${{ steps.login-ecr.outputs.registry }}:v0.1
